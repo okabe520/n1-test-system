@@ -131,6 +131,16 @@ def api_submit_practice_result():
     return jsonify({'ok': True})
 
 
+@app.route('/result/latest')
+def view_latest_result():
+    rows = get_history(1)
+    if not rows:
+        return 'No results yet', 404
+    r = dict(rows[0])
+    r['details'] = json.loads(r['details'])
+    return render_template('result.html', result=r, type_names=TYPE_NAMES)
+
+
 @app.route('/result/<int:result_id>')
 def view_result(result_id):
     r = get_result(result_id)

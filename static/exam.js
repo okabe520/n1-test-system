@@ -4,7 +4,7 @@ let currentIndex = 0;
 let answeredCount = 0;
 let answers = {};
 let bookmarks = new Set();
-let timeLeft = {{ total_time }};
+let timeLeft = EXAM_TOTAL_TIME;
 let timerInterval = null;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -153,7 +153,7 @@ function submitExam() {
         if (answers[qid] === undefined) answers[qid] = -1;
     });
 
-    const duration = {{ total_time }} - timeLeft;
+    const duration = EXAM_TOTAL_TIME - timeLeft;
 
     document.querySelector('.exam-body').innerHTML = '<div class="loading">採点中...</div>';
 
