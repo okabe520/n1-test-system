@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}N1 Test{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="/">日本語 N1 テスト</a>
+        </div>
+        <div class="nav-links">
+            <a href="/">ホーム</a>
+            <a href="/exam">模擬試験</a>
+            <a href="/practice">分野別練習</a>
+            <a href="/history">成績履歴</a>
+        </div>
+    </nav>
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}成績履歴 - N1 Test{% endblock %}
+{% block content %}
+<h1>成績履歴</h1>
+
+{% if history %}
+<table>
+    <thead><tr><th>日時</th><th>モード</th><th>得点率</th><th>正解数</th><th>所要時間</th><th></th></tr></thead>
+    <tbody>
+    {% for r in history %}
+    <tr>
+        <td>{{ r.exam_date[:16] }}</td>
+        <td>{{ '模擬試験' if r.mode == 'exam' else '練習' }}</td>
+        <td><span class="score {{ 'good' if r.score >= 60 }} {{ 'great' if r.score >= 80 }}">{{ r.score }}%</span></td>
+        <td>{{ r.correct }}/{{ r.total }}</td>
+        <td>{% if r.duration_seconds %}{{ r.duration_seconds // 60 }}分{% else %}-{% endif %}</td>
+        <td><a href="/result/{{ r.id }}">詳細</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty">
+    <p>まだ成績がありません。模擬試験または練習を始めましょう。</p>
+    <a href="/exam" class="btn">模擬試験へ</a>
+</div>
+{% endif %}
+{% endblock %}

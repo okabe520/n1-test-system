@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}分野別練習 - N1 Test{% endblock %}
+{% block content %}
+<h1>分野別練習</h1>
+
+<div id="practice-select">
+    <div class="practice-grid">
+        <div class="pcard" onclick="startPractice('vocab')">
+            <h2>言語知識<br>（文字・語彙）</h2>
+            <p>漢字読み・文脈・言い換え・用法</p>
+        </div>
+        <div class="pcard" onclick="startPractice('grammar')">
+            <h2>文法</h2>
+            <p>文法形式判断・文章組合・文章文法</p>
+        </div>
+        <div class="pcard" onclick="startPractice('reading')">
+            <h2>読解</h2>
+            <p>短文〜長文・統合理解・主張・情報検索</p>
+        </div>
+    </div>
+    <div class="practice-setup" style="text-align:center;margin-top:20px;">
+        <label>問題数：</label>
+        <select id="pcnt" style="padding:6px 12px;font-size:15px;">
+            <option value="10">10問</option>
+            <option value="20">20問</option>
+            <option value="30">30問</option>
+        </select>
+    </div>
+</div>
+
+<div id="practice-area" style="display:none">
+    <div class="exam-header">
+        <h1 id="p-title"></h1>
+        <div class="exam-info">
+            <span id="p-progress">0/0</span>
+            <span id="p-score" style="color:#27ae60"></span>
+            <button class="btn" onclick="finishPractice()">終了</button>
+        </div>
+    </div>
+    <div id="p-question" class="question-card" style="display:block"></div>
+    <div style="text-align:center;margin-top:16px;">
+        <button class="btn" id="p-next" onclick="nextPractice()" style="display:none">次の問題</button>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+let pQuestions = [], pIndex = 0, pCorrect = 0;
+
+function startPractice(section) {
+    const cnt = document.getElementById('pcnt').value;
+    fetch(`/api/practice/${section}?count=${cnt}`)
+    .then(r => r.json())
+    .then(data => {
+        pQuestions = data; pIndex = 0; pCorrect = 0;
+        document.getElementById('practice-select').style.display = 'none';
+        document.getElementById('practice-area').style.display = 'block';
+        document.getElementById('p-title').textContent = section === 'vocab' ? '言語知識' : section === 'grammar' ? '文法' : '読解';
+        showPracticeQuestion();
+    });
+}
+
+function showPracticeQuestion() {
+    if (pIndex >= pQuestions.length) { finishPractice(); return; }
+    const q = pQuestions[pIndex];
+    let opts;
+    try { opts = JSON.parse(q.options); } catch(e) { opts = q.options; }
+    let html = `<div class="q-header"><span>問 ${pIndex + 1}/${pQuestions.length}</span></div>`;
+    html += `<div class="q-text">${q.question_text}</div><div class="q-options">`;
+    opts.forEach((opt, i) => {
+        html += `<label class="option" onclick="checkAnswer(${q.id}, ${i}, this)">
+            <span class="option-num">${i + 1}</span><span>${opt}</span></label>`;
+    });
+    html += '</div><div id="p-feedback" style="margin-top:12px"></div>';
+    document.getElementById('p-question').innerHTML = html;
+    document.getElementById('p-progress').textContent = `${pIndex}/${pQuestions.length}`;
+    document.getElementById('p-next').style.display = 'none';
+}
+
+function checkAnswer(qid, answer, el) {
+    document.querySelectorAll('#p-question .option').forEach(o => o.style.pointerEvents = 'none');
+    fetch('/api/check', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({question_id:qid, answer})
+    })
+    .then(r => r.json())
+    .then(data => {
+        const fb = document.getElementById('p-feedback');
+        if (data.correct) {
+            el.classList.add('correct');
+            fb.innerHTML = '<span style="color:#27ae60">正解！</span>';
+            pCorrect++;
+        } else {
+            el.classList.add('wrong');
+            fb.innerHTML = `<span style="color:#e74c3c">不正解。正解は ${data.correct_answer + 1}</span>`;
+            document.querySelectorAll('#p-question .option').forEach((o,i) => {
+                if (i === data.correct_answer) o.classList.add('correct');
+            });
+        }
+        if (data.explanation) fb.innerHTML += `<p style="color:#666;margin-top:8px">${data.explanation}</p>`;
+        document.getElementById('p-score').textContent = `正解: ${pCorrect}/${pIndex + 1}`;
+        document.getElementById('p-next').style.display = 'inline-block';
+    });
+}
+
+function nextPractice() {
+    pIndex++;
+    showPracticeQuestion();
+}
+
+function finishPractice() {
+    const total = pQuestions.length;
+    const score = total > 0 ? Math.round(pCorrect / total * 100) : 0;
+    alert(`練習完了！\n正解率: ${score}% (${pCorrect}/${total})`);
+    window.location.reload();
+}
+</script>
+{% endblock %}

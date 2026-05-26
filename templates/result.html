@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}結果 - N1 Test{% endblock %}
+{% block content %}
+<div class="result-container">
+    <h1>試験結果</h1>
+
+    <div class="score-card">
+        <div class="big-score {{ 'pass' if result.score >= 60 else 'fail' }}">
+            {{ result.score }}%
+        </div>
+        <div class="score-detail">
+            <p>{{ result.correct }} / {{ result.total }} 問正解</p>
+            <p>{{ '合格圏内' if result.score >= 60 else '不合格圏' }}（N1合格基準 60%）</p>
+            {% if result.duration_seconds %}
+            <p>所要時間: {{ result.duration_seconds // 60 }}分{{ result.duration_seconds % 60 }}秒</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <h2>問題別レビュー</h2>
+    <div class="review-list">
+    {% for d in result.details %}
+    <div class="review-item {{ 'r-correct' if d.is_correct else 'r-wrong' }}">
+        <div class="r-header">
+            <span class="r-num">問 {{ loop.index }}</span>
+            {% if d.is_correct %}
+            <span class="r-badge r-ok">正解</span>
+            {% else %}
+            <span class="r-badge r-ng">不正解</span>
+            {% endif %}
+        </div>
+        <div class="r-question">{{ d.question_text|safe }}</div>
+        <div class="r-answers">
+            {% for opt in d.options %}
+            <span class="r-opt {{ 'r-selected' if loop.index0 == d.user_answer }} {{ 'r-correct-ans' if loop.index0 == d.correct_answer }}">
+                {{ loop.index0 + 1 }}. {{ opt }}
+            </span>
+            {% endfor %}
+        </div>
+        {% if not d.is_correct and d.explanation %}
+        <div class="r-explanation">{{ d.explanation }}</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    </div>
+
+    <div style="text-align:center;margin-top:24px">
+        <a href="/exam" class="btn">再受験</a>
+        <a href="/history" class="btn btn-secondary">成績履歴</a>
+    </div>
+</div>
+{% endblock %}

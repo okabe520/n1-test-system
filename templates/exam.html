@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}模擬試験 - N1 Test{% endblock %}
+{% block content %}
+<div class="exam-layout">
+    <div class="exam-header">
+        <h1>模擬試験</h1>
+        <div class="exam-info">
+            <span class="timer" id="timer">110:00</span>
+            <span class="progress" id="progress">0/{{ questions|length }}</span>
+            <button class="btn btn-submit" onclick="submitExam()">提出する</button>
+        </div>
+    </div>
+
+    <div class="exam-body">
+        <div class="question-area" id="question-area">
+            {% for q in questions %}
+            {% set opts = q.options|parse_json %}
+            <div class="question-card" id="q-{{ q.id }}" data-id="{{ q.id }}" data-answer="{{ q.answer }}" style="display:none">
+                <div class="q-header">
+                    <span class="q-number">問 {{ loop.index }}</span>
+                    <span class="q-type">{{ type_names.get(q.q_type, q.q_type) }}</span>
+                    <span class="q-section">{{ section_names.get(q.section, q.section) }}</span>
+                    <span class="q-bookmark" onclick="toggleBookmark(this, {{ q.id }})">☆</span>
+                </div>
+                <div class="q-text">{{ q.question_text|safe }}</div>
+                <div class="q-options">
+                    {% for opt in opts %}
+                    <label class="option" id="opt-{{ q.id }}-{{ loop.index0 }}">
+                        <input type="radio" name="q-{{ q.id }}" value="{{ loop.index0 }}" onchange="selectAnswer({{ q.id }}, {{ loop.index0 }})">
+                        <span class="option-num">{{ loop.index0 + 1 }}</span>
+                        <span class="option-text">{{ opt }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="answer-sheet" id="answer-sheet">
+            <h3>解答用紙</h3>
+            <div class="sheet-grid" id="sheet-grid">
+                {% for q in questions %}
+                <span class="sheet-cell" id="cell-{{ q.id }}" data-id="{{ q.id }}">{{ loop.index }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/exam.js"></script>
+{% endblock %}

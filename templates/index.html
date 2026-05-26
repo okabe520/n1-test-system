@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}ホーム - N1 Test{% endblock %}
+{% block content %}
+<div class="hero">
+    <h1>日本語能力試験 N1</h1>
+    <p>模擬試験と分野別練習で合格を目指す</p>
+</div>
+
+<div class="cards">
+    <div class="card">
+        <div class="card-icon">&#x1F4DD;</div>
+        <h2>模擬試験</h2>
+        <p>本番と同じ形式・時間制限で実力を試す。</p>
+        <p class="card-meta">全{{ count }}問 | 110分 | 自動採点</p>
+        <a href="/exam" class="btn">試験開始</a>
+    </div>
+    <div class="card">
+        <div class="card-icon">&#x1F4DA;</div>
+        <h2>分野別練習</h2>
+        <p>言語知識・文法・読解を集中トレーニング。</p>
+        <p class="card-meta">分野選択式 | 即時判定</p>
+        <a href="/practice" class="btn">練習開始</a>
+    </div>
+    <div class="card">
+        <div class="card-icon">&#x1F4CA;</div>
+        <h2>成績履歴</h2>
+        <p>過去の模擬試験と練習の結果を振り返る。</p>
+        <p class="card-meta">得点推移 | 復習機能</p>
+        <a href="/history" class="btn">履歴を見る</a>
+    </div>
+</div>
+
+{% if history %}
+<div class="recent-results">
+    <h3>最近の成績</h3>
+    <table>
+        <thead><tr><th>日時</th><th>モード</th><th>得点</th><th>正解数</th><th></th></tr></thead>
+        <tbody>
+        {% for r in history %}
+        <tr>
+            <td>{{ r.exam_date[:16] }}</td>
+            <td>{{ '模擬試験' if r.mode == 'exam' else '練習' }}</td>
+            <td><span class="score {{ 'good' if r.score >= 60 }}">{{ r.score }}%</span></td>
+            <td>{{ r.correct }}/{{ r.total }}</td>
+            <td><a href="/result/{{ r.id }}">詳細</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}
