@@ -1,16 +1,16 @@
 {% extends "base.html" %}
-{% block title %}ホーム - N1 Test{% endblock %}
+{% block title %}ホーム - N1 Practice{% endblock %}
 {% block content %}
 <div class="hero">
-    <h1>日本語能力試験 N1</h1>
-    <p>模擬試験と分野別練習で合格を目指す</p>
+    <h1>N1 学習練習システム</h1>
+    <p>JLPT N1 の学習テーマを参考にした非公式の個人向け練習ツール</p>
 </div>
 
 <div class="cards">
     <div class="card">
         <div class="card-icon">&#x1F4DD;</div>
-        <h2>模擬試験</h2>
-        <p>本番と同じ形式・時間制限で実力を試す。</p>
+        <h2>練習セッション</h2>
+        <p>時間制限付きの練習用セッションで理解度を確認する。</p>
         <p class="card-meta">全{{ count }}問 | 110分 | 自動採点</p>
         <a href="/exam" class="btn">試験開始</a>
     </div>
@@ -24,7 +24,7 @@
     <div class="card">
         <div class="card-icon">&#x1F4CA;</div>
         <h2>成績履歴</h2>
-        <p>過去の模擬試験と練習の結果を振り返る。</p>
+        <p>過去の練習セッションと分野別練習の結果を振り返る。</p>
         <p class="card-meta">得点推移 | 復習機能</p>
         <a href="/history" class="btn">履歴を見る</a>
     </div>
@@ -39,8 +39,8 @@
         {% for r in history %}
         <tr>
             <td>{{ r.exam_date[:16] }}</td>
-            <td>{{ '模擬試験' if r.mode == 'exam' else '練習' }}</td>
-            <td><span class="score {{ 'good' if r.score >= 60 }}">{{ r.score }}%</span></td>
+            <td>{{ '練習セッション' if r.mode == 'exam' else '練習' }}</td>
+            <td><span class="score">{{ r.score }}%</span></td>
             <td>{{ r.correct }}/{{ r.total }}</td>
             <td><a href="/result/{{ r.id }}">詳細</a></td>
         </tr>

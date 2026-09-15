@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}成績履歴 - N1 Test{% endblock %}
+{% block title %}練習履歴 - N1 Practice{% endblock %}
 {% block content %}
 <h1>成績履歴</h1>
 
@@ -10,8 +10,8 @@
     {% for r in history %}
     <tr>
         <td>{{ r.exam_date[:16] }}</td>
-        <td>{{ '模擬試験' if r.mode == 'exam' else '練習' }}</td>
-        <td><span class="score {{ 'good' if r.score >= 60 }} {{ 'great' if r.score >= 80 }}">{{ r.score }}%</span></td>
+        <td>{{ '練習セッション' if r.mode == 'exam' else '練習' }}</td>
+        <td><span class="score">{{ r.score }}%</span></td>
         <td>{{ r.correct }}/{{ r.total }}</td>
         <td>{% if r.duration_seconds %}{{ r.duration_seconds // 60 }}分{% else %}-{% endif %}</td>
         <td><a href="/result/{{ r.id }}">詳細</a></td>
@@ -21,8 +21,8 @@
 </table>
 {% else %}
 <div class="empty">
-    <p>まだ成績がありません。模擬試験または練習を始めましょう。</p>
-    <a href="/exam" class="btn">模擬試験へ</a>
+    <p>まだ練習記録がありません。練習セッションまたは分野別練習を始めましょう。</p>
+    <a href="/exam" class="btn">練習セッションへ</a>
 </div>
 {% endif %}
 {% endblock %}

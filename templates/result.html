@@ -1,16 +1,17 @@
 {% extends "base.html" %}
-{% block title %}結果 - N1 Test{% endblock %}
+{% block title %}練習結果 - N1 Practice{% endblock %}
 {% block content %}
 <div class="result-container">
-    <h1>試験結果</h1>
+    <h1>練習結果</h1>
 
     <div class="score-card">
-        <div class="big-score {{ 'pass' if result.score >= 60 else 'fail' }}">
+        <div class="big-score">
             {{ result.score }}%
         </div>
         <div class="score-detail">
             <p>{{ result.correct }} / {{ result.total }} 問正解</p>
-            <p>{{ '合格圏内' if result.score >= 60 else '不合格圏' }}（N1合格基準 60%）</p>
+            <p>練習スコア（正答率）</p>
+            <p>このスコアは公式JLPTの合否・尺度・難易度予測を示すものではありません。</p>
             {% if result.duration_seconds %}
             <p>所要時間: {{ result.duration_seconds // 60 }}分{{ result.duration_seconds % 60 }}秒</p>
             {% endif %}
@@ -45,7 +46,7 @@
     </div>
 
     <div style="text-align:center;margin-top:24px">
-        <a href="/exam" class="btn">再受験</a>
+        <a href="/exam" class="btn">もう一度練習する</a>
         <a href="/history" class="btn btn-secondary">成績履歴</a>
     </div>
 </div>

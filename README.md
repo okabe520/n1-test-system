@@ -1,13 +1,19 @@
-# 日本語 N1 テストシステム
+# N1-Inspired Japanese Practice System
 
-JLPT N1 模擬試験と分野別練習システム。本番と同じ形式・時間制限で実力を試せる。
+An unofficial personal learning tool inspired by JLPT N1 study topics. It provides practice-oriented mock sessions and section-based exercises; it is not an official JLPT product and is not affiliated with the Japan Foundation or JEES.
 
 ## 機能
 
-- **模擬試験**：71問 / 110分、時間制限・自動採点・問題別レビュー
+- **練習セッション**：71問 / 110分の練習向け mock workflow、時間制限・自動採点・問題別レビュー
 - **分野別練習**：言語知識 / 文法 / 読解、即時判定＋解説
 - **成績管理**：過去成績の保存と推移確認
 - **キーボード操作**：←→ 移動、1-4 選択
+
+## Question Bank
+
+The question bank contains synthetic / AI-assisted practice content and is not an official JLPT question set. Questions are hand-organized and template-generated to support vocabulary, grammar, and reading practice; they are not copied from official JLPT exam papers.
+
+Session scores are internal practice scores based on correct answers. They do not represent an official JLPT score, pass/fail result, difficulty calibration, section-level score, or score prediction.
 
 ## 技術
 
@@ -32,7 +38,7 @@ pyinstaller --onefile --add-data "templates;templates" --add-data "static;static
 # dist/main.exe を実行
 ```
 
-## 出題構成
+## Practice Session Configuration
 
 | 大問 | 問題数 |
 |------|--------|
