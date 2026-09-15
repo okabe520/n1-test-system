@@ -1,52 +1,54 @@
 # N1-Inspired Japanese Practice System
 
-An unofficial personal learning tool inspired by JLPT N1 study topics. It provides practice-oriented mock sessions and section-based exercises; it is not an official JLPT product and is not affiliated with the Japan Foundation or JEES.
+An unofficial personal learning application inspired by JLPT N1 study topics. This local Flask and SQLite application provides timed practice sessions and section-based exercises; it is not an official JLPT product or exam simulator and is not affiliated with the Japan Foundation or JEES.
 
-## 機能
+## Features
 
-- **練習セッション**：71問 / 110分の練習向け mock workflow、時間制限・自動採点・問題別レビュー
-- **分野別練習**：言語知識 / 文法 / 読解、即時判定＋解説
-- **成績管理**：過去成績の保存と推移確認
-- **キーボード操作**：←→ 移動、1-4 選択
+- A 71-question, 110-minute practice-session workflow
+- Section-based vocabulary, grammar, and reading exercises
+- Automatic scoring and per-question review
+- Local result and history persistence
+- Browser-side session-state recovery
+- Keyboard navigation: left/right arrows to move and `1`–`4` to select an answer
+- Category-constrained question selection for practice sessions
 
 ## Question Bank
 
-The question bank contains synthetic / AI-assisted practice content and is not an official JLPT question set. Questions are hand-organized and template-generated to support vocabulary, grammar, and reading practice; they are not copied from official JLPT exam papers.
+The question bank contains synthetic and AI-assisted practice content. Questions are hand-organized and template-generated to support vocabulary, grammar, and reading practice.
 
-Session scores are internal practice scores based on correct answers. They do not represent an official JLPT score, pass/fail result, difficulty calibration, section-level score, or score prediction.
+The content is not copied from official JLPT exam papers, is not an official JLPT question set, and is not intended to reproduce official question wording, difficulty calibration, or exam composition.
 
-## 技術
+## Scoring Disclaimer
 
-| 層 | 技術 |
-|----|------|
-| バックエンド | Python / Flask |
-| データベース | SQLite |
-| フロントエンド | Jinja2 + Vanilla JS + CSS |
+Scores are internal practice scores based on correct answers. They are not official JLPT scores, official pass/fail decisions, score predictions, or official difficulty calibration. The application does not include a listening section equivalent to the complete JLPT exam.
 
-## 実行
+## Tech Stack
+
+| Layer | Technology |
+| --- | --- |
+| Backend | Python / Flask |
+| Database | SQLite |
+| Front end | Jinja2 / Vanilla JavaScript / CSS |
+
+## Installation and Usage
 
 ```bash
 pip install flask
-python seed_questions.py   # 初回のみ
-python app.py               # http://localhost:5000
+python seed_questions.py
+python app.py
 ```
 
-## EXE 化
+Then open `http://localhost:5000` in a browser.
 
-```bash
-pyinstaller --onefile --add-data "templates;templates" --add-data "static;static" main.py
-# dist/main.exe を実行
-```
+## Practice Session Structure
 
-## Practice Session Configuration
-
-| 大問 | 問題数 |
-|------|--------|
-| 漢字読み | 6 |
-| 文脈規定 | 7 |
-| 言い換え | 6 |
-| 用法 | 6 |
-| 文法形式 | 10 |
-| 文章組合 | 5 |
-| 文章文法 | 5 |
-| 読解（短文〜情報検索） | 26 |
+| Exercise type | Questions |
+| --- | ---: |
+| Kanji reading (漢字読み) | 6 |
+| Contextual meaning (文脈規定) | 7 |
+| Paraphrase (言い換え) | 6 |
+| Usage (用法) | 6 |
+| Grammar form (文法形式) | 10 |
+| Sentence ordering (文章組合) | 5 |
+| Grammar in context (文章文法) | 5 |
+| Reading: short texts to information retrieval (読解) | 26 |
